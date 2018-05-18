@@ -1,5 +1,6 @@
 package com.codingapi.sds.delivery.controller;
 
+import com.codingapi.sds.delivery.ato.vo.ResModel;
 import com.codingapi.sds.delivery.service.AdminService;
 import com.codingapi.sds.delivery.model.DeliveryModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @RequestMapping("/view")
+    public ResModel view(){
+        return adminService.view();
+    }
 
     @RequestMapping("/models")
     public List<String> models(){
