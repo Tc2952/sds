@@ -6,10 +6,10 @@ import com.codingapi.sds.socket.service.ServerService;
 import com.codingapi.sds.socket.utils.ByteUtils;
 import com.codingapi.sds.socket.utils.SocketManager;
 import com.codingapi.sds.socket.utils.SocketUtils;
-import com.lorne.core.framework.utils.encode.Base64Utils;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 /**
  * create by lorne on 2017/9/21
@@ -42,7 +42,7 @@ public class ServerServiceImpl implements ServerService {
 
     @Override
     public boolean sendBase64Cmd(String uniqueKey, String cmd) {
-        SocketUtils.send(uniqueKey, Base64Utils.decode(cmd));
+        SocketUtils.send(uniqueKey, Base64Utils.decode(cmd.getBytes()));
         return true;
     }
 

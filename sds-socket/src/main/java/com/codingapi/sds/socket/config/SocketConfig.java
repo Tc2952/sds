@@ -11,17 +11,44 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class SocketConfig {
 
 
-    private int port;
-
+    /**
+     * socket 心跳时间(秒)
+     */
     private int heartTime;
 
+    /**
+     * 最大连接数
+     */
     private int maxConnection;
 
+    /**
+     * nettyPort
+     */
     private int nettyPort;
 
+    /**
+     * netty 端口号
+     */
     private String nettyIp;
 
+    /**
+     * netty 的Tag
+     */
     private String nettyTag;
+
+    /**
+     * Delivery的名称
+     */
+    private String deliveryName;
+
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
 
     public int getNettyPort() {
         return nettyPort;
@@ -47,13 +74,6 @@ public class SocketConfig {
         this.nettyTag = nettyTag;
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
 
     public int getHeartTime() {
         return heartTime;

@@ -5,13 +5,13 @@
 
 
     <artifactId>sds-socket</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.2</version>
     <name>sds-socket</name>
 
     <parent>
         <groupId>com.codingapi</groupId>
         <artifactId>sds</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.2</version>
     </parent>
 
     <dependencies>

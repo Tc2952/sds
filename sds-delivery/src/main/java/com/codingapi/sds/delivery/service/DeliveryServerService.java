@@ -9,7 +9,6 @@ import java.util.List;
  */
 public interface DeliveryServerService {
 
-    String SOCKET_SERVER_KEY = "SOCKET-SERVER";
 
     Server getOkServer();
 

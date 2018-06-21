@@ -1,5 +1,6 @@
 package com.codingapi.sds.delivery.service.impl;
 
+import com.codingapi.sds.delivery.config.DeliveryConfig;
 import com.codingapi.sds.delivery.service.DeliveryServerService;
 import com.codingapi.sds.delivery.model.Server;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,14 @@ public class DeliveryServerServiceImpl implements DeliveryServerService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private DeliveryConfig deliveryConfig;
+
 
     @Override
     public Server getOkServer() {
 
-        List<ServiceInstance> serviceInstances =  discoveryClient.getInstances(SOCKET_SERVER_KEY);
+        List<ServiceInstance> serviceInstances =  discoveryClient.getInstances(deliveryConfig.getSocketName());
 
         //选取socket服务
         if (serviceInstances != null && serviceInstances.size() > 0 ) {
@@ -51,7 +55,7 @@ public class DeliveryServerServiceImpl implements DeliveryServerService {
 
     @Override
     public List<Server> serverList() {
-        List<ServiceInstance> serviceInstances =  discoveryClient.getInstances(SOCKET_SERVER_KEY);
+        List<ServiceInstance> serviceInstances =  discoveryClient.getInstances(deliveryConfig.getSocketName());
 
         List<Server> servers = new ArrayList<>();
 

@@ -1,49 +1,50 @@
 package com.codingapi.sds.delivery.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import redis.clients.jedis.JedisPoolConfig;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * Created by lorne on 2017/7/5.
+ * Created by houcunlu
  */
-
 @Configuration
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-public class RedisConfig {
+public class RedisConfig extends CachingConfigurerSupport {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisConfig.class);
+    @Autowired
+    public RedisConnectionFactory redisConnectionFactory;
 
+
+    /**
+     * 实例化 RedisTemplate 对象
+     *
+     * @return
+     */
     @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisPoolConfig getRedisConfig() {
-        JedisPoolConfig config = new JedisPoolConfig();
-        return config;
+    public RedisTemplate<String, Object> functionDomainRedisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        initDomainRedisTemplate(redisTemplate, redisConnectionFactory);
+        return redisTemplate;
     }
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisConnectionFactory getConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        JedisPoolConfig config = getRedisConfig();
-        factory.setPoolConfig(config);
-        logger.info("JedisConnectionFactory bean init success.");
-        return factory;
+    /**
+     * 设置数据存入 redis 的序列化方式
+     *
+     * @param redisTemplate
+     * @param factory
+     */
+    private void initDomainRedisTemplate(RedisTemplate<String, Object> redisTemplate, RedisConnectionFactory factory) {
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.setConnectionFactory(factory);
     }
 
 
-    @Bean
-    public RedisTemplate<?, ?> getRedisTemplate() {
-        RedisTemplate<?, ?> template = new StringRedisTemplate(getConnectionFactory());
-        return template;
-    }
 }

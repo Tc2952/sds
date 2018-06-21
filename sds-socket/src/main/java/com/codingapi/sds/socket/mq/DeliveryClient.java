@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * create by lorne on 2017/12/6
  */
-@FeignClient(value = "delivery")
+@FeignClient(value = "${codingapi.sds.socket.delivery-name}")
 public interface DeliveryClient {
 
 

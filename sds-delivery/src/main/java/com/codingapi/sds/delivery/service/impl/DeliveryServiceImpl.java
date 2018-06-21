@@ -1,5 +1,6 @@
 package com.codingapi.sds.delivery.service.impl;
 
+import com.codingapi.sds.delivery.config.DeliveryConfig;
 import com.codingapi.sds.delivery.service.*;
 import com.codingapi.sds.delivery.utils.TelnetUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -37,6 +38,8 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private DeliveryConfig deliveryConfig;
 
     private Logger logger = LoggerFactory.getLogger(DeliveryServiceImpl.class);
 
@@ -58,7 +61,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 
     private ServiceInstance getInstance(String ipPort) {
-        List<ServiceInstance> instances = discoveryClient.getInstances(DeliveryServerService.SOCKET_SERVER_KEY);
+        List<ServiceInstance> instances = discoveryClient.getInstances(deliveryConfig.getSocketName());
         for (ServiceInstance instance : instances) {
             String ip = instance.getHost();
             int port = instance.getPort();
